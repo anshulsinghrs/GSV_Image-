@@ -43,13 +43,14 @@ def main() -> None:
     # Mutate the singleton CONFIG so every module sees the same settings.
     CONFIG.input_csv = args.input
     CONFIG.output_dir = args.output
-    CONFIG.images_dir = args.output / "images"
-    CONFIG.cache_dir = args.output / ".cache"
-    CONFIG.log_dir = args.output / "logs"
-    CONFIG.metadata_csv = args.output / "metadata.csv"
-    CONFIG.metadata_geojson = args.output / "metadata.geojson"
-    CONFIG.panorama_index_csv = args.output / "panorama_index.csv"
-    CONFIG.summary_json = args.output / "summary.json"
+    CONFIG.points_dir = args.output / "gsv_points"
+    CONFIG.images_dir = args.output / "gsv_images"
+    CONFIG.cache_dir = CONFIG.points_dir / ".cache"
+    CONFIG.log_dir = CONFIG.points_dir / "logs"
+    CONFIG.metadata_csv = CONFIG.points_dir / "metadata.csv"
+    CONFIG.metadata_geojson = CONFIG.points_dir / "metadata.geojson"
+    CONFIG.panorama_index_csv = CONFIG.points_dir / "panorama_index.csv"
+    CONFIG.summary_json = CONFIG.points_dir / "summary.json"
     CONFIG.api_key = args.api_key
     CONFIG.image_size = args.image_size
     CONFIG.fov = args.fov

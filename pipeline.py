@@ -353,8 +353,8 @@ def run(cfg: PipelineConfig = CONFIG) -> Dict:
     write_panorama_index(full_meta_df, image_df, cfg, logger)
 
     # --- Visualizations + summary ------------------------------------------
-    build_sample_points_map(points, cfg.output_dir / "map_sample_points.html")
-    build_panorama_map(full_meta_df, cfg.output_dir / "map_panoramas.html")
+    build_sample_points_map(points, cfg.points_dir / "map_sample_points.html")
+    build_panorama_map(full_meta_df, cfg.points_dir / "map_panoramas.html")
     summary = compute_summary(
         points, full_meta_df, image_df, cfg.summary_json, logger
     )

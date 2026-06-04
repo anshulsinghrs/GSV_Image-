@@ -63,17 +63,34 @@ already-downloaded images on disk are skipped.
 
 ## Outputs
 
+Two top-level folders:
+
+```
+output/
+├── gsv_points/                 # all tabular / vector / log artefacts
+│   ├── metadata.csv
+│   ├── metadata.geojson
+│   ├── panorama_index.csv
+│   ├── summary.json
+│   ├── map_sample_points.html
+│   ├── map_panoramas.html
+│   ├── logs/pipeline.log
+│   └── .cache/*.json
+└── gsv_images/                 # downloaded JPEG panoramas
+    └── {point_id}_{pano_id}_h{heading}.jpg
+```
+
 | File | Description |
 |------|-------------|
-| `output/metadata.csv` | One row per input point (status, pano_id, capture_date, lat/lon, image_path, heading, pitch, fov, copyright, source) |
-| `output/metadata.geojson` | Same data as point features (EPSG:4326) |
-| `output/panorama_index.csv` | One row per (point_id, pano_id, heading) |
-| `output/images/{point_id}_{pano_id}_h{heading}.jpg` | Downloaded JPEGs |
-| `output/map_sample_points.html` | Folium map of all input points |
-| `output/map_panoramas.html` | Folium map of successful panoramas |
-| `output/summary.json` | Coverage stats (+ per-segment if available) |
-| `output/logs/pipeline.log` | Rotating log file |
-| `output/.cache/*.json` | Cached metadata responses |
+| `gsv_points/metadata.csv` | One row per input point (status, pano_id, capture_date, lat/lon, image_path, heading, pitch, fov, copyright, source) |
+| `gsv_points/metadata.geojson` | Same data as point features (EPSG:4326) |
+| `gsv_points/panorama_index.csv` | One row per (point_id, pano_id, heading) |
+| `gsv_images/{point_id}_{pano_id}_h{heading}.jpg` | Downloaded JPEGs |
+| `gsv_points/map_sample_points.html` | Folium map of all input points |
+| `gsv_points/map_panoramas.html` | Folium map of successful panoramas |
+| `gsv_points/summary.json` | Coverage stats (+ per-segment if available) |
+| `gsv_points/logs/pipeline.log` | Rotating log file |
+| `gsv_points/.cache/*.json` | Cached metadata responses |
 
 ## Configuration
 

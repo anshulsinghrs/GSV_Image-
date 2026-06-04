@@ -21,16 +21,20 @@ class PipelineConfig:
     image_endpoint: str = "https://maps.googleapis.com/maps/api/streetview"
 
     # --- Input / Output -----------------------------------------------------
+    # Two top-level folders:
+    #   gsv_points/  -> CSVs, GeoJSON, summary, maps, cache, logs
+    #   gsv_images/  -> downloaded JPEG panoramas
     input_csv: Path = Path("data/road_points_delhi.csv")
     output_dir: Path = Path("output")
-    images_dir: Path = Path("output/images")
-    cache_dir: Path = Path("output/.cache")
-    log_dir: Path = Path("output/logs")
+    points_dir: Path = Path("output/gsv_points")
+    images_dir: Path = Path("output/gsv_images")
+    cache_dir: Path = Path("output/gsv_points/.cache")
+    log_dir: Path = Path("output/gsv_points/logs")
 
-    metadata_csv: Path = Path("output/metadata.csv")
-    metadata_geojson: Path = Path("output/metadata.geojson")
-    panorama_index_csv: Path = Path("output/panorama_index.csv")
-    summary_json: Path = Path("output/summary.json")
+    metadata_csv: Path = Path("output/gsv_points/metadata.csv")
+    metadata_geojson: Path = Path("output/gsv_points/metadata.geojson")
+    panorama_index_csv: Path = Path("output/gsv_points/panorama_index.csv")
+    summary_json: Path = Path("output/gsv_points/summary.json")
 
     # --- Imaging parameters -------------------------------------------------
     image_size: str = "640x640"          # max free tier is 640x640
@@ -55,6 +59,7 @@ class PipelineConfig:
     def ensure_dirs(self) -> None:
         for d in (
             self.output_dir,
+            self.points_dir,
             self.images_dir,
             self.cache_dir,
             self.log_dir,
