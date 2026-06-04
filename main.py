@@ -13,8 +13,7 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
-from config import CONFIG
-from pipeline import run
+from gsv_points import CONFIG, run
 
 
 def parse_args() -> argparse.Namespace:

@@ -20,13 +20,16 @@ points across Delhi).
 ## Layout
 
 ```
-config.py          # all tunable parameters
-utils.py           # logging, retrying session, JSON cache, rate limiter
-metadata.py        # Street View Metadata API client
-downloader.py      # Static Image API downloader
-visualization.py   # Folium maps + summary stats
-pipeline.py        # orchestration (metadata → images → outputs)
-main.py            # CLI entry point
+gsv_points/                # GSV points + metadata package
+├── __init__.py
+├── config.py              # all tunable parameters
+├── utils.py               # logging, retrying session, JSON cache, rate limiter
+├── metadata.py            # Street View Metadata API client
+├── downloader.py          # Static Image API downloader
+├── visualization.py       # Folium maps + summary stats
+└── pipeline.py            # orchestration (metadata → images → outputs)
+main.py                    # CLI entry point
+road_sampler.py            # OSMnx-based road point sampler
 requirements.txt
 ```
 

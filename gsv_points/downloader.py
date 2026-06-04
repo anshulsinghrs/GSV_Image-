@@ -15,8 +15,8 @@ from typing import Any, List, Optional
 
 import requests
 
-from config import PipelineConfig
-from utils import RateLimiter
+from .config import PipelineConfig
+from .utils import RateLimiter
 
 
 @dataclass
