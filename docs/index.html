@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>GSV Image &mdash; Google Street View Collection Pipeline</title>
+<meta name="description" content="Production-ready Python pipeline to sample road points, query the Google Street View Metadata API, and download panoramic imagery." />
+<style>
+  :root{
+    --bg:#0b1020;
+    --panel:#121a32;
+    --ink:#e8ecff;
+    --muted:#9aa3c7;
+    --accent:#7aa2ff;
+    --accent-2:#4ad6a0;
+    --code:#0e1530;
+    --line:#222b54;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font:16px/1.55 -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:48px 24px 96px}
+  header{display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:12px}
+  .logo{width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,#7aa2ff,#4ad6a0);display:grid;place-items:center;font-weight:800;color:#0b1020}
+  h1{font-size:clamp(28px,4vw,42px);margin:8px 0 6px;letter-spacing:-.02em}
+  .tag{color:var(--muted);font-size:15px}
+  .hero{margin-top:36px;padding:32px;border:1px solid var(--line);border-radius:16px;background:var(--panel)}
+  .hero h2{margin:0 0 12px;font-size:22px}
+  .hero p{margin:0;color:var(--muted)}
+  .cta{display:flex;gap:12px;margin-top:20px;flex-wrap:wrap}
+  .btn{display:inline-block;padding:10px 16px;border-radius:10px;border:1px solid var(--line);background:#1a2247;color:var(--ink);font-weight:600}
+  .btn.primary{background:linear-gradient(135deg,#7aa2ff,#4ad6a0);color:#0b1020;border:none}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:32px}
+  .card{padding:20px;border:1px solid var(--line);border-radius:14px;background:var(--panel)}
+  .card h3{margin:0 0 8px;font-size:16px;color:var(--accent-2)}
+  .card p{margin:0;color:var(--muted);font-size:14px}
+  section{margin-top:48px}
+  section h2{font-size:22px;margin:0 0 14px;letter-spacing:-.01em}
+  pre{background:var(--code);border:1px solid var(--line);border-radius:12px;padding:16px;overflow:auto;font-size:13px}
+  code{font-family:SFMono-Regular,Menlo,Consolas,monospace}
+  ul.clean{padding-left:18px}
+  ul.clean li{margin:6px 0;color:var(--muted)}
+  table{width:100%;border-collapse:collapse;margin-top:8px;font-size:14px}
+  th,td{padding:10px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+  th{color:var(--accent-2);font-weight:600}
+  td code{background:#1a2247;padding:1px 6px;border-radius:6px}
+  footer{margin-top:64px;color:var(--muted);font-size:13px;text-align:center}
+  .pill{display:inline-block;padding:2px 8px;border-radius:999px;background:#1a2247;border:1px solid var(--line);font-size:12px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="brand">
+      <div class="logo">GSV</div>
+      <div>
+        <h1>GSV Image</h1>
+        <div class="tag">A modular Python pipeline for sampling road points and collecting Google Street View metadata + imagery.</div>
+      </div>
+    </div>
+    <span class="pill">Python &middot; OSMnx &middot; Folium</span>
+  </header>
+
+  <div class="hero">
+    <h2>Sample any city's roads. Pull every available panorama.</h2>
+    <p>Generate 100&nbsp;m road sample points, probe the free Street View Metadata API per point, deduplicate panoramas, and bulk-download configurable JPEGs &mdash; with retries, caching, and full resume support.</p>
+    <div class="cta">
+      <a class="btn primary" href="https://github.com/anshulsinghrs/GSV_Image-">View on GitHub &rarr;</a>
+      <a class="btn" href="https://github.com/anshulsinghrs/GSV_Image-#readme">Read the docs</a>
+      <a class="btn" href="https://github.com/anshulsinghrs/GSV_Image-/pulls">Pull requests</a>
+    </div>
+  </div>
+
+  <section>
+    <h2>Features</h2>
+    <div class="grid">
+      <div class="card"><h3>Metadata-first</h3><p>Probe Google's free Metadata API before spending image-API quota. No wasted requests on points without coverage.</p></div>
+      <div class="card"><h3>Concurrent &amp; throttled</h3><p>ThreadPoolExecutor fan-out plus a client-side token-bucket QPS limiter and urllib3 backoff for 429/5xx.</p></div>
+      <div class="card"><h3>Resumable</h3><p>On-disk JSON cache for metadata, skip-if-exists for images. Re-runs only fill in gaps.</p></div>
+      <div class="card"><h3>Dedup panoramas</h3><p>Same pano shared by multiple nearby points is downloaded once. Globally deduplicated index.</p></div>
+      <div class="card"><h3>Maps included</h3><p>Folium HTML maps for sample points and successful panoramas, plus per-segment coverage stats.</p></div>
+      <div class="card"><h3>Production-ready</h3><p>Rotating logs, retry policy, batching, configurable image size / headings / pitch / FOV.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Quick start</h2>
+<pre><code>git clone https://github.com/anshulsinghrs/GSV_Image-.git
+cd GSV_Image-
+pip install -r requirements.txt
+
+export GSV_API_KEY="YOUR_GOOGLE_API_KEY"
+
+# 1. sample road points
+python road_sampler.py --city "Delhi, India" --spacing 100 \
+    --out data/road_points_delhi.csv
+
+# 2. collect Street View metadata + imagery
+python main.py \
+    --input data/road_points_delhi.csv \
+    --output output/ \
+    --headings 0,90,180,270 \
+    --fov 90 --pitch 0 \
+    --image-size 640x640 \
+    --batch-size 100 --max-workers 8 --qps 25</code></pre>
+  </section>
+
+  <section>
+    <h2>Repository layout</h2>
+<pre><code>GSV_Image-/
+&#9500;&#9472;&#9472; gsv_points/             # GSV-points + metadata package
+&#9474;   &#9500;&#9472;&#9472; config.py
+&#9474;   &#9500;&#9472;&#9472; utils.py
+&#9474;   &#9500;&#9472;&#9472; metadata.py         # Metadata API client
+&#9474;   &#9500;&#9472;&#9472; downloader.py       # Static Image API downloader
+&#9474;   &#9500;&#9472;&#9472; pipeline.py         # orchestration
+&#9474;   &#9492;&#9472;&#9472; visualization.py    # Folium maps + summary
+&#9500;&#9472;&#9472; main.py                 # CLI entry point
+&#9500;&#9472;&#9472; road_sampler.py         # OSMnx road sampler
+&#9500;&#9472;&#9472; docs/                   # this site
+&#9492;&#9472;&#9472; requirements.txt</code></pre>
+  </section>
+
+  <section>
+    <h2>Outputs</h2>
+    <table>
+      <thead><tr><th>Path</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>output/gsv_points/metadata.csv</code></td><td>One row per input point with status, pano_id, capture_date, lat/lon, image_path, heading, pitch, fov.</td></tr>
+        <tr><td><code>output/gsv_points/metadata.geojson</code></td><td>Same data as point features (EPSG:4326).</td></tr>
+        <tr><td><code>output/gsv_points/panorama_index.csv</code></td><td>One row per (point_id, pano_id, heading) &mdash; globally dedup'd.</td></tr>
+        <tr><td><code>output/gsv_points/summary.json</code></td><td>Coverage stats; per-segment if input CSV has <code>segment_id</code>.</td></tr>
+        <tr><td><code>output/gsv_points/map_sample_points.html</code></td><td>Folium map of all input points.</td></tr>
+        <tr><td><code>output/gsv_points/map_panoramas.html</code></td><td>Folium map of successful panoramas.</td></tr>
+        <tr><td><code>output/gsv_images/{point_id}_{pano_id}_h{heading}.jpg</code></td><td>Downloaded JPEG panoramas.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>Configuration</h2>
+    <p style="color:var(--muted)">All defaults live in <code>gsv_points/config.PipelineConfig</code>. Override via CLI flags or env vars.</p>
+    <table>
+      <thead><tr><th>Knob</th><th>Default</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td><code>image_size</code></td><td>640x640</td><td>Static API free-tier max.</td></tr>
+        <tr><td><code>headings</code></td><td>0, 90, 180, 270</td><td>Compass headings per pano.</td></tr>
+        <tr><td><code>fov</code> / <code>pitch</code></td><td>90 / 0</td><td>Camera field of view and pitch.</td></tr>
+        <tr><td><code>radius_m</code></td><td>50</td><td>Metadata search radius.</td></tr>
+        <tr><td><code>source</code></td><td>outdoor</td><td>Exclude user-contributed indoor panos.</td></tr>
+        <tr><td><code>rate_limit_qps</code></td><td>25</td><td>Client-side throttle.</td></tr>
+        <tr><td><code>max_workers</code></td><td>8</td><td>Concurrent HTTP threads.</td></tr>
+        <tr><td><code>batch_size</code></td><td>100</td><td>Metadata batching unit.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <footer>
+    Built for road-network research &middot;
+    <a href="https://github.com/anshulsinghrs/GSV_Image-">GitHub</a>
+  </footer>
+</div>
+</body>
+</html>
