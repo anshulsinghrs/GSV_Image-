@@ -15,8 +15,8 @@ from typing import Any, Dict, Optional
 
 import requests
 
-from config import PipelineConfig
-from utils import JsonCache, RateLimiter, safe_key
+from .config import PipelineConfig
+from .utils import JsonCache, RateLimiter, safe_key
 
 
 @dataclass
