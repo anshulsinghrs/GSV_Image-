@@ -1,7 +1,11 @@
-osmnx>=1.9
-geopandas>=0.14
+requests>=2.31.0
 pandas>=2.0
+geopandas>=0.14
 shapely>=2.0
+tqdm>=4.66.0
+folium>=0.15.0
+urllib3>=2.0.0
+osmnx>=1.9
 networkx>=3.0
 matplotlib>=3.7
 numpy>=1.24
